@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://7d0umibxb22w"]
+[gd_scene load_steps=9 format=3 uid="uid://7d0umibxb22w"]
 
 [ext_resource type="Texture2D" uid="uid://nhbehrvtmem4" path="res://icon.svg" id="1_4222y"]
-[ext_resource type="PackedScene" uid="uid://miufisyak5o" path="res://addons/OpenTopDownAI/Agents/NDirectionalAgent2D.tscn" id="2_tlnyr"]
-[ext_resource type="PackedScene" uid="uid://byfpfmutemcww" path="res://addons/OpenTopDownAI/Behaviors/MoveTowardsBehavior.tscn" id="3_6y31b"]
+[ext_resource type="PackedScene" uid="uid://miufisyak5o" path="res://addons/OpenTopDownAI/Agents/NDirectionalAgent2D/NDirectionalAgent2D.tscn" id="2_tlnyr"]
+[ext_resource type="PackedScene" uid="uid://byfpfmutemcww" path="res://addons/OpenTopDownAI/Behaviors/MoveTowardsBehavior/MoveTowardsBehavior.tscn" id="3_6y31b"]
+[ext_resource type="PackedScene" uid="uid://bmm73r66n8jbl" path="res://addons/OpenTopDownAI/Behaviors/SmoothWeightsBehavior/SmoothWeightsBehavior.tscn" id="4_o5nqn"]
 [ext_resource type="PackedScene" uid="uid://d31f2ur7adxc1" path="res://addons/OpenTopDownAI/Units/Unit2D/Unit2D.tscn" id="4_rkgg3"]
+[ext_resource type="PackedScene" uid="uid://dg14dxhn80i2o" path="res://addons/OpenTopDownAI/Behaviors/PrioritizeZeroBehavior/PrioritizeZeroBehavior.tscn" id="5_2ygjp"]
 [ext_resource type="PackedScene" uid="uid://dnlt05i85npdv" path="res://addons/Target/MouseTarget/MouseTarget.tscn" id="5_6s1ja"]
 [ext_resource type="PackedScene" uid="uid://du31ry8gqwhxq" path="res://addons/Target/Vector2Target/Vector2Target.tscn" id="6_d7k4v"]
 
@@ -15,7 +17,7 @@
 texture = ExtResource("1_4222y")
 
 [node name="NDirectionalAgent2D" parent="GodotUnit" instance=ExtResource("2_tlnyr")]
-directions = 20
+directions = 16
 
 [node name="MoveTowardsBehavior" parent="GodotUnit/NDirectionalAgent2D" node_paths=PackedStringArray("target") instance=ExtResource("3_6y31b")]
 target = NodePath("../../MouseTarget")
@@ -24,8 +26,14 @@ target = NodePath("../../MouseTarget")
 target = NodePath("../../Vector2Target")
 maxDistance = 500.0
 
+[node name="SmoothWeightsBehavior" parent="GodotUnit/NDirectionalAgent2D" instance=ExtResource("4_o5nqn")]
+weight = 30.0
+
+[node name="PrioritizeZeroBehavior" parent="GodotUnit/NDirectionalAgent2D" instance=ExtResource("5_2ygjp")]
+weight = 0.3
+
 [node name="Unit2D" parent="GodotUnit" instance=ExtResource("4_rkgg3")]
-speed = 200.0
+speed = 400.0
 
 [node name="MouseTarget" parent="GodotUnit" instance=ExtResource("5_6s1ja")]
 

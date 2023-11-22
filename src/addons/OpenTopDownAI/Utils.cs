@@ -10,10 +10,10 @@ namespace OpenTopDownAI
 {
     public class Utils
     {
-        public static Array<T> GetChildrenOfType<[MustBeVariant] T>(Node parent)
+        public static List<T> GetChildrenOfType<[MustBeVariant] T>(Node parent)
             where T : Node
         {
-            Array<T> items = new Array<T>();
+            List<T> items = new List<T>();
             foreach (Node child in parent.GetChildren())
             {
                 if (child is T)

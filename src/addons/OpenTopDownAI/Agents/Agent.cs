@@ -12,6 +12,8 @@ public abstract partial class Agent : Node
     List<SteeringBehavior> steeringBehaviors;
     Timer timer;
 
+    float totalWeight = 0.0f;
+
     [Export]
     public float timeBetweenRecalculation = 0.05f;
 
@@ -19,7 +21,12 @@ public abstract partial class Agent : Node
 
     public override void _Ready()
     {
-        steeringBehaviors = Utils.GetChildrenOfInterfaceType<Node, SteeringBehavior>(this);
+        steeringBehaviors = Utils.GetChildrenOfType<SteeringBehavior>(this);
+        foreach (SteeringBehavior behavior in steeringBehaviors)
+        {
+            totalWeight += behavior.weight;
+        }
+
         unit = Utils.GetSiblingOfType<Unit<Vector2>>(this);
 
         timer = Utils.RepeatFunctionOnTimer(
@@ -34,17 +41,24 @@ public abstract partial class Agent : Node
 
     protected void RecalculateMoveDirection()
     {
+        // We calculate them all before resetting weights because some depend on looking at previous weights.
+        List<List<float>> calculatedBehaviors = new List<List<float>>();
+        foreach (SteeringBehavior behavior in steeringBehaviors)
+        {
+            calculatedBehaviors.Add(behavior.CalculateWeights(directionsToTravel));
+        }
+
+        // Clear current weights
         for (int i = 0; i < weights.Count; i++)
         {
             weights[i] = 0.0f;
         }
 
-        foreach (SteeringBehavior behavior in steeringBehaviors)
+        for (int j = 0; j < calculatedBehaviors.Count; j++)
         {
-            List<float> currentBehaviorWeights = behavior.CalculateWeights(directionsToTravel);
             for (int i = 0; i < weights.Count; i++)
             {
-                weights[i] += currentBehaviorWeights[i];
+                weights[i] += calculatedBehaviors[j][i] / totalWeight;
             }
         }
 
@@ -109,5 +123,10 @@ public abstract partial class Agent : Node
     protected virtual bool IsDirectionEmpty(Vector2 direction)
     {
         return true;
+    }
+
+    public List<float> GetWeights()
+    {
+        return weights;
     }
 }

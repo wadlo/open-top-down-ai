@@ -6,7 +6,7 @@ using TargettingCalculations;
 
 namespace OpenTopDownAI
 {
-    public partial class MoveTowardsBehavior : Node, SteeringBehavior
+    public partial class MoveTowardsBehavior : SteeringBehavior
     {
         Node2D rootObjectNode;
 
@@ -21,13 +21,14 @@ namespace OpenTopDownAI
 
         public override void _Ready()
         {
-            rootObjectNode = Utils.GetAncestorSiblingOfType<Node2D>(this);
+            rootObjectNode = Utils.GetAncestorOfType<Node2D>(this);
         }
 
-        public List<float> CalculateWeights(List<Vector2> directions)
+        public override List<float> CalculateWeights(List<Vector2> directions)
         {
             Vector2 diff = target.GetCalculatedPosition() - rootObjectNode.GlobalPosition;
             float dist = diff.Length();
+            diff /= dist;
             List<float> weights = new List<float>();
             foreach (Vector2 potentialDirection in directions)
             {
@@ -36,17 +37,17 @@ namespace OpenTopDownAI
                     potentialDirection == Vector2.Zero && dist <= maxDistance && dist >= minDistance
                 )
                 {
-                    weights.Add(1.0f);
+                    weights.Add(weight * 0.5f);
                 }
                 // Too close
                 else if (dist < minDistance)
                 {
-                    weights.Add(-potentialDirection.Normalized().Dot(diff));
+                    weights.Add(-weight * potentialDirection.Normalized().Dot(diff));
                 }
                 // Too far
                 else if (dist > maxDistance)
                 {
-                    weights.Add(potentialDirection.Normalized().Dot(diff));
+                    weights.Add(weight * potentialDirection.Normalized().Dot(diff));
                 }
                 // Within bounds, not 0
                 else
