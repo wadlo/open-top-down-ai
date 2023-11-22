@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://7d0umibxb22w"]
+
+[ext_resource type="Texture2D" uid="uid://nhbehrvtmem4" path="res://icon.svg" id="1_4222y"]
+[ext_resource type="PackedScene" uid="uid://miufisyak5o" path="res://addons/OpenTopDownAI/Agents/NDirectionalAgent2D.tscn" id="2_tlnyr"]
+[ext_resource type="PackedScene" uid="uid://byfpfmutemcww" path="res://addons/OpenTopDownAI/Behaviors/MoveTowardsBehavior.tscn" id="3_6y31b"]
+[ext_resource type="PackedScene" uid="uid://d31f2ur7adxc1" path="res://addons/OpenTopDownAI/Units/Unit2D/Unit2D.tscn" id="4_rkgg3"]
+[ext_resource type="PackedScene" uid="uid://dnlt05i85npdv" path="res://addons/Target/MouseTarget/MouseTarget.tscn" id="5_6s1ja"]
+[ext_resource type="PackedScene" uid="uid://du31ry8gqwhxq" path="res://addons/Target/Vector2Target/Vector2Target.tscn" id="6_d7k4v"]
+
+[node name="StayInArea" type="Node2D"]
+
+[node name="GodotUnit" type="Node2D" parent="."]
+
+[node name="Icon" type="Sprite2D" parent="GodotUnit"]
+texture = ExtResource("1_4222y")
+
+[node name="NDirectionalAgent2D" parent="GodotUnit" instance=ExtResource("2_tlnyr")]
+directions = 20
+
+[node name="MoveTowardsBehavior" parent="GodotUnit/NDirectionalAgent2D" node_paths=PackedStringArray("target") instance=ExtResource("3_6y31b")]
+target = NodePath("../../MouseTarget")
+
+[node name="MoveTowardsCenterPoint" parent="GodotUnit/NDirectionalAgent2D" node_paths=PackedStringArray("target") instance=ExtResource("3_6y31b")]
+target = NodePath("../../Vector2Target")
+maxDistance = 500.0
+
+[node name="Unit2D" parent="GodotUnit" instance=ExtResource("4_rkgg3")]
+speed = 200.0
+
+[node name="MouseTarget" parent="GodotUnit" instance=ExtResource("5_6s1ja")]
+
+[node name="Vector2Target" parent="GodotUnit" instance=ExtResource("6_d7k4v")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.5, 0.5)

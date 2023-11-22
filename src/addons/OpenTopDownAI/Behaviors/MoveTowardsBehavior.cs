@@ -31,11 +31,12 @@ namespace OpenTopDownAI
             List<float> weights = new List<float>();
             foreach (Vector2 potentialDirection in directions)
             {
+                // 0 direction edge case and within bounds
                 if (
                     potentialDirection == Vector2.Zero && dist <= maxDistance && dist >= minDistance
                 )
                 {
-                    weights.Add(float.MaxValue);
+                    weights.Add(1.0f);
                 }
                 // Too close
                 else if (dist < minDistance)
@@ -43,9 +44,14 @@ namespace OpenTopDownAI
                     weights.Add(-potentialDirection.Normalized().Dot(diff));
                 }
                 // Too far
-                else
+                else if (dist > maxDistance)
                 {
                     weights.Add(potentialDirection.Normalized().Dot(diff));
+                }
+                // Within bounds, not 0
+                else
+                {
+                    weights.Add(0.0f);
                 }
             }
 

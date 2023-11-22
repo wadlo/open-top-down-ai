@@ -9,7 +9,7 @@ public abstract partial class Agent : Node
 {
     protected List<Vector2> directionsToTravel;
     List<float> weights;
-    SteeringBehavior steeringBehavior;
+    List<SteeringBehavior> steeringBehaviors;
     Timer timer;
 
     [Export]
@@ -19,7 +19,7 @@ public abstract partial class Agent : Node
 
     public override void _Ready()
     {
-        steeringBehavior = Utils.GetChildOfInterfaceType<Node, SteeringBehavior>(this);
+        steeringBehaviors = Utils.GetChildrenOfInterfaceType<Node, SteeringBehavior>(this);
         unit = Utils.GetSiblingOfType<Unit<Vector2>>(this);
 
         timer = Utils.RepeatFunctionOnTimer(
@@ -34,7 +34,20 @@ public abstract partial class Agent : Node
 
     protected void RecalculateMoveDirection()
     {
-        weights = steeringBehavior.CalculateWeights(directionsToTravel);
+        for (int i = 0; i < weights.Count; i++)
+        {
+            weights[i] = 0.0f;
+        }
+
+        foreach (SteeringBehavior behavior in steeringBehaviors)
+        {
+            List<float> currentBehaviorWeights = behavior.CalculateWeights(directionsToTravel);
+            for (int i = 0; i < weights.Count; i++)
+            {
+                weights[i] += currentBehaviorWeights[i];
+            }
+        }
+
         Vector2 optimalDirection = GetOptimalVector(directionsToTravel, weights);
         unit.SetMoveDirection(optimalDirection);
     }

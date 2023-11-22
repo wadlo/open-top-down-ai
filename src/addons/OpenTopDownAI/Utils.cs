@@ -47,6 +47,22 @@ namespace OpenTopDownAI
             return default;
         }
 
+        public static List<I> GetChildrenOfInterfaceType<[MustBeVariant] T, I>(Node parent)
+            where T : Node
+            where I : class
+        {
+            var nodes = Utils.GetChildrenOfType<T>(parent);
+            List<I> result = new List<I>();
+            foreach (T node in nodes)
+            {
+                if (node is I)
+                {
+                    result.Add(node as I);
+                }
+            }
+            return result;
+        }
+
         public static I GetSiblingOfInterfaceType<[MustBeVariant] T, I>(Node node)
             where T : Node
             where I : class
