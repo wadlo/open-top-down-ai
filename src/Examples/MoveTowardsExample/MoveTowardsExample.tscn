@@ -1,0 +1,52 @@
+[gd_scene load_steps=9 format=3 uid="uid://7d0umibxb22w"]
+
+[ext_resource type="Texture2D" uid="uid://nhbehrvtmem4" path="res://icon.svg" id="1_t6s16"]
+[ext_resource type="PackedScene" uid="uid://miufisyak5o" path="res://addons/OpenTopDownAI/Agents/NDirectionalAgent2D/NDirectionalAgent2D.tscn" id="2_yawt6"]
+[ext_resource type="PackedScene" uid="uid://byfpfmutemcww" path="res://addons/OpenTopDownAI/Behaviors/MoveTowardsBehavior/MoveTowardsBehavior.tscn" id="3_wp47v"]
+[ext_resource type="PackedScene" uid="uid://bmm73r66n8jbl" path="res://addons/OpenTopDownAI/Behaviors/SmoothWeightsBehavior/SmoothWeightsBehavior.tscn" id="4_fp3kt"]
+[ext_resource type="PackedScene" uid="uid://dg14dxhn80i2o" path="res://addons/OpenTopDownAI/Behaviors/PrioritizeZeroBehavior/PrioritizeZeroBehavior.tscn" id="5_45uce"]
+[ext_resource type="PackedScene" uid="uid://d31f2ur7adxc1" path="res://addons/OpenTopDownAI/Units/Unit2D/Unit2D.tscn" id="6_rl4bk"]
+[ext_resource type="PackedScene" uid="uid://dnlt05i85npdv" path="res://addons/Target/MouseTarget/MouseTarget.tscn" id="7_akv5d"]
+[ext_resource type="PackedScene" uid="uid://du31ry8gqwhxq" path="res://addons/Target/Vector2Target/Vector2Target.tscn" id="8_jkyqg"]
+
+[node name="MoveTowardsExample" type="Node2D"]
+
+[node name="GodotUnit" type="Node2D" parent="."]
+
+[node name="Icon" type="Sprite2D" parent="GodotUnit"]
+texture = ExtResource("1_t6s16")
+
+[node name="NDirectionalAgent2D" parent="GodotUnit" instance=ExtResource("2_yawt6")]
+directions = 16
+
+[node name="MoveTowardsBehavior" parent="GodotUnit/NDirectionalAgent2D" node_paths=PackedStringArray("target") instance=ExtResource("3_wp47v")]
+target = NodePath("../../MouseTarget")
+smoothnessRadius = 50.0
+scalingPower = 0.0
+minDistance = 200.0
+maxDistance = 300.0
+weight = 3.0
+
+[node name="MoveTowardsCenterPoint" parent="GodotUnit/NDirectionalAgent2D" node_paths=PackedStringArray("target") instance=ExtResource("3_wp47v")]
+target = NodePath("../../Vector2Target")
+smoothnessRadius = 100.0
+scalingPower = 0.5
+minDistance = 350.0
+maxDistance = 400.0
+weight = 0.2
+
+[node name="SmoothWeightsBehavior" parent="GodotUnit/NDirectionalAgent2D" instance=ExtResource("4_fp3kt")]
+weight = 100000.0
+
+[node name="PrioritizeZeroBehavior" parent="GodotUnit/NDirectionalAgent2D" instance=ExtResource("5_45uce")]
+weight = 0.5
+
+[node name="Unit2D" parent="GodotUnit" instance=ExtResource("6_rl4bk")]
+speed = 400.0
+
+[node name="MouseTarget" parent="GodotUnit" instance=ExtResource("7_akv5d")]
+
+[node name="Vector2Target" parent="GodotUnit" instance=ExtResource("8_jkyqg")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.5, 0.5)

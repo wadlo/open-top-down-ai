@@ -14,6 +14,12 @@ namespace OpenTopDownAI
         Target target;
 
         [Export]
+        public float smoothnessRadius = 10.0f;
+
+        [Export]
+        public float scalingPower = 1.0f;
+
+        [Export]
         public float minDistance = 0.0f;
 
         [Export]
@@ -33,21 +39,27 @@ namespace OpenTopDownAI
             foreach (Vector2 potentialDirection in directions)
             {
                 // 0 direction edge case and within bounds
-                if (
-                    potentialDirection == Vector2.Zero && dist <= maxDistance && dist >= minDistance
-                )
+                if (potentialDirection == Vector2.Zero)
                 {
-                    weights.Add(weight * 0.5f);
+                    weights.Add(0.0f);
                 }
                 // Too close
                 else if (dist < minDistance)
                 {
-                    weights.Add(-weight * potentialDirection.Normalized().Dot(diff));
+                    weights.Add(
+                        -weight
+                            * CalculateStrengthByDist(minDistance - dist)
+                            * potentialDirection.Normalized().Dot(diff)
+                    );
                 }
                 // Too far
                 else if (dist > maxDistance)
                 {
-                    weights.Add(weight * potentialDirection.Normalized().Dot(diff));
+                    weights.Add(
+                        weight
+                            * CalculateStrengthByDist(dist - maxDistance)
+                            * potentialDirection.Normalized().Dot(diff)
+                    );
                 }
                 // Within bounds, not 0
                 else
@@ -57,6 +69,13 @@ namespace OpenTopDownAI
             }
 
             return weights;
+        }
+
+        float CalculateStrengthByDist(float dist)
+        {
+            // If scalingPower is 0, the max strength will be 1. Scale linearly with 1, etc.
+            float maxValue = Mathf.Pow(dist, scalingPower);
+            return Utils.MapFloat(0, smoothnessRadius, 0, maxValue, dist, true);
         }
     }
 }

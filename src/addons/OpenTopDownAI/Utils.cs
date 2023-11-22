@@ -142,10 +142,15 @@ namespace OpenTopDownAI
             float fromMax,
             float toMin,
             float toMax,
-            float fromValue
+            float fromValue,
+            bool clamp = false
         )
         {
             float percent = (fromValue - fromMin) / (fromMax - fromMin);
+            if (clamp)
+            {
+                percent = Mathf.Max(Mathf.Min(1.0f, percent), 0.0f);
+            }
             return toMin + (toMax - toMin) * percent;
         }
 
