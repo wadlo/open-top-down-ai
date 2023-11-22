@@ -6,8 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://bmm73r66n8jbl" path="res://addons/OpenTopDownAI/Behaviors/SmoothWeightsBehavior/SmoothWeightsBehavior.tscn" id="4_fp3kt"]
 [ext_resource type="PackedScene" uid="uid://dg14dxhn80i2o" path="res://addons/OpenTopDownAI/Behaviors/PrioritizeZeroBehavior/PrioritizeZeroBehavior.tscn" id="5_45uce"]
 [ext_resource type="PackedScene" uid="uid://d31f2ur7adxc1" path="res://addons/OpenTopDownAI/Units/Unit2D/Unit2D.tscn" id="6_rl4bk"]
-[ext_resource type="PackedScene" uid="uid://dnlt05i85npdv" path="res://addons/Target/MouseTarget/MouseTarget.tscn" id="7_akv5d"]
-[ext_resource type="PackedScene" uid="uid://du31ry8gqwhxq" path="res://addons/Target/Vector2Target/Vector2Target.tscn" id="8_jkyqg"]
+[ext_resource type="PackedScene" uid="uid://dnlt05i85npdv" path="res://addons/TargettingCalculations/MouseTarget/MouseTarget.tscn" id="7_akv5d"]
+[ext_resource type="PackedScene" uid="uid://du31ry8gqwhxq" path="res://addons/TargettingCalculations/Vector2Target/Vector2Target.tscn" id="8_jkyqg"]
 
 [node name="MoveTowardsExample" type="Node2D"]
 

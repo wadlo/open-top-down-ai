@@ -1,4 +1,5 @@
 using Godot;
+using OpenTopDownAI;
 using System.Collections.Generic;
 
 public partial class Unit2D : Unit<Vector2>
@@ -15,6 +16,6 @@ public partial class Unit2D : Unit<Vector2>
     public override void _Process(double _delta)
     {
         float delta = (float)_delta;
-        GetParent<Node2D>().Position += delta * speed * moveDirection;
+        Utils.GetAncestorOfType<Node2D>(this).Position += delta * speed * moveDirection;
     }
 }
