@@ -65,3 +65,13 @@ position = Vector2(0, 1.895)
 [node name="FollowerFollower8" parent="." instance=ExtResource("9_wotgu")]
 
 [node name="FollowerFollower9" parent="." instance=ExtResource("9_wotgu")]
+
+[node name="FollowerFollower10" parent="." instance=ExtResource("9_wotgu")]
+
+[node name="FollowerFollower11" parent="." instance=ExtResource("9_wotgu")]
+
+[node name="FollowerFollower12" parent="." instance=ExtResource("9_wotgu")]
+
+[node name="FollowerFollower13" parent="." instance=ExtResource("9_wotgu")]
+
+[node name="FollowerFollower14" parent="." instance=ExtResource("9_wotgu")]

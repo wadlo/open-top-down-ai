@@ -23,13 +23,13 @@ smoothnessRadius = 50.0
 scalingPower = 0.0
 minDistance = 200.0
 maxDistance = 300.0
-weight = 3.0
+weight = 5.0
 
 [node name="AvoidClosestUnit" parent="NDirectionalAgent2D" node_paths=PackedStringArray("target") instance=ExtResource("3_0x4x4")]
 target = NodePath("../../NearestNodeWithTagTarget")
-smoothnessRadius = 50.0
+smoothnessRadius = 200.0
 scalingPower = 0.0
-minDistance = 200.0
+minDistance = 450.0
 maxDistance = 3000.0
 weight = 3.0
 
