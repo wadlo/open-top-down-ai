@@ -1,0 +1,49 @@
+[gd_scene load_steps=9 format=3 uid="uid://cjrw8bwtg13gg"]
+
+[ext_resource type="Texture2D" uid="uid://nhbehrvtmem4" path="res://icon.svg" id="1_tldk5"]
+[ext_resource type="PackedScene" uid="uid://miufisyak5o" path="res://addons/OpenTopDownAI/Agents/NDirectionalAgent2D/NDirectionalAgent2D.tscn" id="2_gdbos"]
+[ext_resource type="PackedScene" uid="uid://byfpfmutemcww" path="res://addons/OpenTopDownAI/Behaviors/MoveTowardsBehavior/MoveTowardsBehavior.tscn" id="3_0x4x4"]
+[ext_resource type="PackedScene" uid="uid://bmm73r66n8jbl" path="res://addons/OpenTopDownAI/Behaviors/SmoothWeightsBehavior/SmoothWeightsBehavior.tscn" id="4_b1ofm"]
+[ext_resource type="PackedScene" uid="uid://dg14dxhn80i2o" path="res://addons/OpenTopDownAI/Behaviors/PrioritizeZeroBehavior/PrioritizeZeroBehavior.tscn" id="5_cmvob"]
+[ext_resource type="PackedScene" uid="uid://d31f2ur7adxc1" path="res://addons/OpenTopDownAI/Units/Unit2D/Unit2D.tscn" id="6_ixvhp"]
+[ext_resource type="PackedScene" uid="uid://bbuapicxld64r" path="res://addons/TargettingCalculations/NodeWithTagTarget/NodeWithTagTarget.tscn" id="7_ohw4d"]
+[ext_resource type="PackedScene" uid="uid://cnpi3ardrrti3" path="res://addons/TargettingCalculations/NearestNodeWithTagTarget/NearestNodeWithTagTarget.tscn" id="8_5os0q"]
+
+[node name="FollowerFollower" type="Node2D" groups=["enemy"]]
+
+[node name="Icon" type="Sprite2D" parent="."]
+texture = ExtResource("1_tldk5")
+
+[node name="NDirectionalAgent2D" parent="." instance=ExtResource("2_gdbos")]
+directions = 16
+
+[node name="MoveTowardsBehavior" parent="NDirectionalAgent2D" node_paths=PackedStringArray("target") instance=ExtResource("3_0x4x4")]
+target = NodePath("../../NodeWithTagTarget")
+smoothnessRadius = 50.0
+scalingPower = 0.0
+minDistance = 200.0
+maxDistance = 300.0
+weight = 3.0
+
+[node name="AvoidClosestUnit" parent="NDirectionalAgent2D" node_paths=PackedStringArray("target") instance=ExtResource("3_0x4x4")]
+target = NodePath("../../NearestNodeWithTagTarget")
+smoothnessRadius = 50.0
+scalingPower = 0.0
+minDistance = 200.0
+maxDistance = 3000.0
+weight = 3.0
+
+[node name="SmoothWeightsBehavior" parent="NDirectionalAgent2D" instance=ExtResource("4_b1ofm")]
+weight = 100000.0
+
+[node name="PrioritizeZeroBehavior" parent="NDirectionalAgent2D" instance=ExtResource("5_cmvob")]
+weight = 0.5
+
+[node name="Unit2D" parent="." instance=ExtResource("6_ixvhp")]
+speed = 400.0
+
+[node name="NodeWithTagTarget" parent="." instance=ExtResource("7_ohw4d")]
+group = "player"
+
+[node name="NearestNodeWithTagTarget" parent="." instance=ExtResource("8_5os0q")]
+group = "enemy"

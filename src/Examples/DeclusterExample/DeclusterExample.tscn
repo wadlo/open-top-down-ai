@@ -1,0 +1,67 @@
+[gd_scene load_steps=10 format=3 uid="uid://b8javue1mh0nc"]
+
+[ext_resource type="Texture2D" uid="uid://nhbehrvtmem4" path="res://icon.svg" id="1_1qyor"]
+[ext_resource type="PackedScene" uid="uid://miufisyak5o" path="res://addons/OpenTopDownAI/Agents/NDirectionalAgent2D/NDirectionalAgent2D.tscn" id="2_8e1m0"]
+[ext_resource type="PackedScene" uid="uid://byfpfmutemcww" path="res://addons/OpenTopDownAI/Behaviors/MoveTowardsBehavior/MoveTowardsBehavior.tscn" id="3_j4r1i"]
+[ext_resource type="PackedScene" uid="uid://bmm73r66n8jbl" path="res://addons/OpenTopDownAI/Behaviors/SmoothWeightsBehavior/SmoothWeightsBehavior.tscn" id="4_jx6dd"]
+[ext_resource type="PackedScene" uid="uid://dg14dxhn80i2o" path="res://addons/OpenTopDownAI/Behaviors/PrioritizeZeroBehavior/PrioritizeZeroBehavior.tscn" id="5_75ytw"]
+[ext_resource type="PackedScene" uid="uid://d31f2ur7adxc1" path="res://addons/OpenTopDownAI/Units/Unit2D/Unit2D.tscn" id="6_ohdwl"]
+[ext_resource type="PackedScene" uid="uid://dnlt05i85npdv" path="res://addons/TargettingCalculations/MouseTarget/MouseTarget.tscn" id="7_xgdwk"]
+[ext_resource type="PackedScene" uid="uid://cnpi3ardrrti3" path="res://addons/TargettingCalculations/NearestNodeWithTagTarget/NearestNodeWithTagTarget.tscn" id="8_p2kvn"]
+[ext_resource type="PackedScene" uid="uid://cjrw8bwtg13gg" path="res://Examples/DeclusterExample/FollowerFollower.tscn" id="9_wotgu"]
+
+[node name="DeclusterExample" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.5, 0.5)
+
+[node name="Camera2D2" type="Camera2D" parent="."]
+zoom = Vector2(0.5, 0.5)
+
+[node name="MouseFollower" type="Node2D" parent="." groups=["player"]]
+
+[node name="Icon" type="Sprite2D" parent="MouseFollower"]
+texture = ExtResource("1_1qyor")
+
+[node name="NDirectionalAgent2D" parent="MouseFollower" instance=ExtResource("2_8e1m0")]
+directions = 16
+
+[node name="MoveTowardsBehavior" parent="MouseFollower/NDirectionalAgent2D" node_paths=PackedStringArray("target") instance=ExtResource("3_j4r1i")]
+target = NodePath("../../MouseTarget")
+smoothnessRadius = 50.0
+scalingPower = 0.0
+maxDistance = 100.0
+weight = 3.0
+
+[node name="SmoothWeightsBehavior" parent="MouseFollower/NDirectionalAgent2D" instance=ExtResource("4_jx6dd")]
+weight = 100000.0
+
+[node name="PrioritizeZeroBehavior" parent="MouseFollower/NDirectionalAgent2D" instance=ExtResource("5_75ytw")]
+weight = 0.5
+
+[node name="Unit2D" parent="MouseFollower" instance=ExtResource("6_ohdwl")]
+speed = 800.0
+
+[node name="MouseTarget" parent="MouseFollower" instance=ExtResource("7_xgdwk")]
+
+[node name="NearestNodeWithTagTarget" parent="MouseFollower" instance=ExtResource("8_p2kvn")]
+
+[node name="FollowerFollower" parent="." instance=ExtResource("9_wotgu")]
+position = Vector2(0.835, 0)
+
+[node name="FollowerFollower2" parent="." instance=ExtResource("9_wotgu")]
+position = Vector2(0, 1.895)
+
+[node name="FollowerFollower3" parent="." instance=ExtResource("9_wotgu")]
+
+[node name="FollowerFollower4" parent="." instance=ExtResource("9_wotgu")]
+
+[node name="FollowerFollower5" parent="." instance=ExtResource("9_wotgu")]
+
+[node name="FollowerFollower6" parent="." instance=ExtResource("9_wotgu")]
+
+[node name="FollowerFollower7" parent="." instance=ExtResource("9_wotgu")]
+
+[node name="FollowerFollower8" parent="." instance=ExtResource("9_wotgu")]
+
+[node name="FollowerFollower9" parent="." instance=ExtResource("9_wotgu")]
