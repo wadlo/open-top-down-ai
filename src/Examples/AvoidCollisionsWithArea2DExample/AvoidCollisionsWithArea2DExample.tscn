@@ -1,0 +1,65 @@
+[gd_scene load_steps=10 format=3 uid="uid://2q78fnc7skpg"]
+
+[ext_resource type="Texture2D" uid="uid://nhbehrvtmem4" path="res://icon.svg" id="1_id6vt"]
+[ext_resource type="PackedScene" uid="uid://miufisyak5o" path="res://addons/OpenTopDownAI/Agents/NDirectionalAgent2D/NDirectionalAgent2D.tscn" id="2_j7nj7"]
+[ext_resource type="PackedScene" uid="uid://byfpfmutemcww" path="res://addons/OpenTopDownAI/Behaviors/MoveTowardsBehavior/MoveTowardsBehavior.tscn" id="3_1dgru"]
+[ext_resource type="PackedScene" uid="uid://bmm73r66n8jbl" path="res://addons/OpenTopDownAI/Behaviors/SmoothWeightsBehavior/SmoothWeightsBehavior.tscn" id="4_xperm"]
+[ext_resource type="PackedScene" uid="uid://dg14dxhn80i2o" path="res://addons/OpenTopDownAI/Behaviors/PrioritizeZeroBehavior/PrioritizeZeroBehavior.tscn" id="5_l2ein"]
+[ext_resource type="PackedScene" uid="uid://ba8im34idychq" path="res://addons/OpenTopDownAI/Behaviors/AvoidCollisionsWithArea2DsBehavior/AvoidCollisionsWithArea2DsBehavior.tscn" id="6_6h20c"]
+[ext_resource type="PackedScene" uid="uid://d31f2ur7adxc1" path="res://addons/OpenTopDownAI/Units/Unit2D/Unit2D.tscn" id="6_yiaai"]
+[ext_resource type="PackedScene" uid="uid://dnlt05i85npdv" path="res://addons/TargettingCalculations/MouseTarget/MouseTarget.tscn" id="7_t68jr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5kx8r"]
+size = Vector2(126.524, 128.277)
+
+[node name="AvoidCollisionsExample" type="Node2D"]
+
+[node name="GodotUnit" type="Node2D" parent="."]
+position = Vector2(308, 0)
+
+[node name="Icon" type="Sprite2D" parent="GodotUnit"]
+texture = ExtResource("1_id6vt")
+
+[node name="NDirectionalAgent2D" parent="GodotUnit" instance=ExtResource("2_j7nj7")]
+directions = 16
+
+[node name="MoveTowardsBehavior" parent="GodotUnit/NDirectionalAgent2D" node_paths=PackedStringArray("target") instance=ExtResource("3_1dgru")]
+target = NodePath("../../MouseTarget")
+smoothnessRadius = 50.0
+scalingPower = 0.0
+maxDistance = 100.0
+weight = 3.0
+
+[node name="SmoothWeightsBehavior" parent="GodotUnit/NDirectionalAgent2D" instance=ExtResource("4_xperm")]
+weight = 100000.0
+
+[node name="PrioritizeZeroBehavior" parent="GodotUnit/NDirectionalAgent2D" instance=ExtResource("5_l2ein")]
+weight = 0.5
+
+[node name="AvoidCollisionsWithArea2DsBehavior" parent="GodotUnit/NDirectionalAgent2D" instance=ExtResource("6_6h20c")]
+colliderRadius = 50.0
+layer = 1
+mask = 2
+weight = 5.0
+
+[node name="Unit2D" parent="GodotUnit" instance=ExtResource("6_yiaai")]
+speed = 400.0
+
+[node name="MouseTarget" parent="GodotUnit" instance=ExtResource("7_t68jr")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.5, 0.5)
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(-1029, 11)
+scale = Vector2(7.45313, 7.21094)
+collision_layer = 3
+
+[node name="Icon" type="Sprite2D" parent="Area2D"]
+scale = Vector2(1, 1)
+texture = ExtResource("1_id6vt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0.0670471, -0.901406)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_5kx8r")

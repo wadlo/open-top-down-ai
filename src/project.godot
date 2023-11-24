@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 project/assembly_name="Open Top Down AI"
 
+[layer_names]
+
+2d_physics/layer_1="Walls"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
